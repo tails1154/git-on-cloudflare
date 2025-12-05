@@ -1,0 +1,495 @@
+@import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* Safelist for JS-toggled classes (Tailwind v4) */
+/* Merge badge toggle classes (commits page) */
+@source inline("bg-sky-100 text-sky-900 dark:bg-sky-500/20 dark:text-sky-300");
+@source inline("dark:border dark:border-sky-500/40");
+@source inline("bg-amber-200 text-amber-900 dark:bg-amber-900/40 dark:text-amber-200");
+@source inline("dark:border-amber-500/40");
+
+/* Refs popover dynamically generated classes */
+@source inline("uppercase px-2 py-1 mt-1 text-xs font-semibold");
+@source inline("text-gray-500 dark:text-gray-400 text-gray-700 dark:text-gray-300");
+@source inline("text-gray-400 dark:text-gray-500");
+@source inline("flex items-center gap-2 w-4 h-4 flex-shrink-0");
+@source inline("block rounded cursor-pointer transition-colors");
+@source inline("px-2 py-1.5 font-medium");
+@source inline("bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800");
+@source inline("text-blue-700 dark:text-blue-300");
+@source inline("hover:bg-gray-100 dark:hover:bg-gray-700");
+@source inline("my-1 border-t border-gray-200 dark:border-gray-700");
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans:
+    -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply font-sans antialiased;
+  }
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility btn {
+  /* Button components */
+  @apply inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md font-medium text-white bg-blue-600 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer;
+
+  &:hover {
+    @apply bg-blue-700;
+  }
+
+  &.secondary {
+    @apply text-gray-700 bg-white border-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-600;
+  }
+
+  &.secondary:hover {
+    @apply bg-gray-50 dark:bg-gray-700;
+  }
+
+  /* Accent variant: muted slate tone (distinct but less vibrant) */
+  &.accent {
+    @apply text-white bg-slate-600;
+  }
+
+  &.accent:hover {
+    @apply bg-slate-700;
+  }
+
+  &.sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+}
+
+@utility segmented {
+  /* Segmented control (pill) wrapper */
+  @apply inline-flex items-center rounded-full border border-gray-300 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-900;
+
+  & .seg {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  & .seg + .seg {
+    @apply border-l border-gray-300 dark:border-gray-700;
+  }
+
+  & .seg.label {
+    @apply text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50;
+  }
+
+  & .seg.action {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-800/50;
+  }
+
+  /* Make links inside segmented actions look like buttons (not blue links) */
+  & a.seg.action {
+    @apply text-gray-700 dark:text-gray-200 no-underline;
+  }
+}
+
+@utility secondary {
+  &.btn {
+    @apply text-gray-700 bg-white border-gray-300 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-600;
+  }
+
+  &.btn:hover {
+    @apply bg-gray-50 dark:bg-gray-700;
+  }
+}
+
+@utility sm {
+  &.btn {
+    @apply px-3 py-1.5 text-sm;
+  }
+}
+
+@utility alert {
+  /* Alert components */
+  @apply p-4 rounded-md mb-4;
+
+  &.warn {
+    @apply bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-200;
+  }
+
+  &.error {
+    @apply bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-200;
+  }
+}
+
+@utility warn {
+  &.alert {
+    @apply bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-200;
+  }
+}
+
+@utility error {
+  &.alert {
+    @apply bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-200;
+  }
+}
+
+@utility muted {
+  /* Utility classes matching existing styles */
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+@utility list {
+  & > div {
+    @apply py-2 border-b border-gray-100 dark:border-gray-800 last:border-b-0;
+  }
+}
+
+@utility repo-grid {
+  @apply grid gap-8 md:grid-cols-2 mt-6;
+}
+
+@utility pager {
+  @apply flex justify-between items-center my-6 p-4 bg-gray-50 dark:bg-gray-800/30 rounded-lg;
+
+  & .perpage {
+    @apply flex gap-3 text-sm;
+  }
+
+  & .perpage a {
+    @apply px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors;
+  }
+
+  & .nav {
+    @apply flex gap-3;
+  }
+}
+
+@utility perpage {
+  .pager & {
+    @apply flex gap-3 text-sm;
+  }
+
+  .pager & a {
+    @apply px-2 py-1 rounded-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors;
+  }
+}
+
+@utility nav {
+  .pager & {
+    @apply flex gap-3;
+  }
+}
+
+@utility breadcrumb {
+  @apply flex items-center gap-2 text-sm mb-4 p-3 bg-gray-50 dark:bg-gray-800/30 rounded-lg;
+}
+
+@utility subnav {
+  @apply inline-flex items-center gap-1 p-1 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900;
+}
+
+@utility tab {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm
+         text-gray-600 dark:text-gray-400
+         hover:text-gray-900 dark:hover:text-gray-100
+         hover:bg-gray-100/70 dark:hover:bg-gray-800/40
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50;
+}
+
+@utility container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2;
+}
+
+@utility card {
+  @apply rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/30;
+}
+
+@utility page-header {
+  @apply flex justify-between items-center mb-6;
+}
+
+@utility no-scrollbar {
+  /* Hide scrollbar but keep functionality */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  /* Isolate markdown content from Tailwind's prose styles */
+  .markdown-content * {
+    all: revert;
+  }
+  /* Fine-tune code block spacing inside markdown-content */
+  .markdown-content pre {
+    /* Reduce default UA margins and padding */
+    margin-top: 0.25rem; /* 4px */
+    margin-bottom: 0.25rem; /* 4px */
+    padding: 0.75rem; /* 12px */
+    border-radius: 0.375rem; /* rounded-md */
+    background-color: transparent;
+    /* Ensure long lines scroll horizontally instead of overflowing */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .markdown-content pre code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem; /* text-sm */
+  }
+  /* Active tab styling using aria-current for accessibility */
+  .subnav .tab[aria-current="page"] {
+    @apply font-medium text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20;
+  }
+}
+
+@layer base {
+  /* Custom base styles */
+  button,
+  [role="button"] {
+    @apply cursor-pointer;
+  }
+  :root {
+    --color-primary: var(--color-blue-600);
+    --color-secondary: var(--color-gray-600);
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Light mode (default) */
+  html:not(.dark) body {
+    /* Tailwind gray-200 to reduce glare */
+    background-color: #e5e7eb;
+    color: #111827; /* gray-900 */
+  }
+  html:not(.dark) .blob-container {
+    /* Slightly lighter than body for contrast (approx gray-100) */
+    background-color: #f3f4f6;
+    border-color: #d1d5db; /* gray-300 */
+  }
+
+  h1 {
+    @apply text-3xl font-bold mb-6;
+  }
+
+  h2 {
+    @apply text-2xl font-semibold mb-4 mt-6;
+  }
+
+  h3 {
+    @apply text-lg font-semibold mb-3 mt-4;
+  }
+
+  p {
+    @apply mb-4;
+  }
+
+  a {
+    @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+    transition: color 150ms ease;
+  }
+}
+
+@layer components {
+  /* Normalize spacing below page headers when nav is absent */
+  .page-header > :last-child:empty {
+    height: 2.5rem; /* reserve space equivalent to repo subnav height */
+  }
+
+  /* On small screens, header stacks so don't reserve extra space */
+  @media (max-width: 640px) {
+    .page-header > :last-child:empty {
+      height: 0;
+    }
+  }
+  /* Table styles */
+  table {
+    @apply w-full border-collapse bg-white dark:bg-gray-800/30;
+  }
+
+  table th {
+    @apply px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50;
+  }
+
+  table td {
+    @apply px-4 py-3 text-sm;
+  }
+
+  table tbody tr {
+    @apply border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors;
+  }
+
+  table tbody tr:first-child {
+    @apply border-t-0;
+  }
+
+  /* Code blocks */
+  pre {
+    @apply p-4 bg-gray-50 dark:bg-gray-900 rounded-md overflow-x-auto;
+  }
+
+  pre code {
+    @apply text-sm font-mono;
+  }
+
+  code {
+    @apply px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded-sm text-sm font-mono;
+  }
+
+  /* Refs popover styles */
+  .ref-menu > summary {
+    list-style: none;
+  }
+  .ref-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .ref-menu > summary::marker {
+    content: "";
+  }
+  .ref-menu[open] > summary {
+    /* subtle focus ring when menu is open */
+    @apply ring-2 ring-blue-500/30;
+  }
+}
+
+/* Responsive tweaks: repo nav layout and commits table on small screens */
+@layer components {
+  @media (max-width: 640px) {
+    /* Stack and wrap the repo header/nav to avoid cramped layout */
+    .page-header {
+      gap: 0.75rem; /* ~12px */
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .page-header nav {
+      gap: 0.5rem;
+      flex-wrap: nowrap; /* keep ref selector and tabs on one row */
+      overflow-x: auto;
+      padding-left: 0.25rem; /* allow focus ring/offset to show */
+      padding-right: 0.25rem;
+    }
+    .page-header nav::-webkit-scrollbar {
+      display: none;
+    }
+    .page-header nav {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .page-header .subnav {
+      display: inline-flex; /* keep as a single row next to ref selector */
+      flex-wrap: nowrap;
+      width: auto;
+    }
+    .page-header .tab {
+      padding: 0.25rem 0.5rem; /* px-2 py-1 */
+      /* keep text-sm for readability */
+    }
+
+    /* Hide the Author column in commits view on small screens */
+    #commits-table th:nth-child(3),
+    #commits-table td:nth-child(3) {
+      display: none;
+    }
+
+    /* Prevent commit rows from overflowing horizontally */
+    #commits-table {
+      table-layout: fixed; /* enable deterministic column widths */
+    }
+    #commits-table th,
+    #commits-table td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* OID column */
+    #commits-table th:nth-child(1),
+    #commits-table td:nth-child(1) {
+      width: 5.5rem; /* enough for short OID */
+      white-space: nowrap;
+    }
+    /* Message column: allow wrapping */
+    #commits-table th:nth-child(2),
+    #commits-table td:nth-child(2) {
+      width: auto;
+      white-space: normal;
+      word-break: break-word;
+    }
+    /* Date column */
+    #commits-table th:nth-child(4),
+    #commits-table td:nth-child(4) {
+      width: auto;
+      white-space: normal; /* allow multiline */
+      overflow: visible;
+      text-overflow: unset;
+    }
+  }
+}
+
+/* Bootstrap Icons alignment fixes */
+@layer utilities {
+  /* Default vertical alignment for all Bootstrap icons */
+  /* Use :not(.hidden) to ensure hidden class still works */
+  i[class*="bi-"]:not(.hidden) {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    font-size: inherit;
+  }
+
+  /* When used inline with text, adjust vertical alignment */
+  i[class*="bi-"].inline {
+    vertical-align: -0.125em; /* Fine-tune vertical position */
+  }
+
+  /* Size utility classes for Bootstrap Icons */
+  i[class*="bi-"].w-4.h-4 {
+    font-size: 1rem; /* 16px */
+    width: 1rem;
+    height: 1rem;
+  }
+
+  i[class*="bi-"].w-5.h-5 {
+    font-size: 1.25rem; /* 20px */
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Ensure proper spacing when icon is followed by text */
+  i[class*="bi-"].mr-1 {
+    margin-right: 0.25rem;
+  }
+
+  i[class*="bi-"].mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  /* Fix alignment for icons in buttons and tabs */
+  .btn i[class*="bi-"],
+  .tab i[class*="bi-"] {
+    vertical-align: -0.125em;
+  }
+
+  /* Special alignment for theme toggle icons */
+  #theme-toggle i[class*="bi-"] {
+    vertical-align: middle;
+  }
+}
